@@ -532,7 +532,7 @@ var BLD={main:{ka:'კოსტავას კორპუსი',en:'Kostava b
   kav:{ka:'ქავთარაძის კორპუსი',en:'Kavtaradze building',sk:'ქავთარაძე',se:'Kavtaradze',addr_ka:'პ. ქავთარაძის ქ. №4',addr_en:'4 P. Kavtaradze St.',kw:'ქავთარაძე ქავთარაძის kavtaradze',to_ka:'ქავთარაძის კორპუსამდე',maps:'https://maps.app.goo.gl/7hQuJxF95B6GE2G3A',ll:'41.720018,44.730569'}};
 function goText(b){ return S.lang==='en'?'How do I get there?':'როგორ მივიდე?'; }
 function dirUrl(b){ return 'https://www.google.com/maps/dir/?api=1&destination='+BLD[b].ll; }
-BLD.b1={ka:'I კორპუსი',en:'Building I',sk:'I კორპუსი',se:'Building I',addr_ka:'კოსტავას ქ. №77ა',addr_en:'77a Kostava St.',kw:'I პირველი კორპუსი first building',maps:'',ll:'41.72445,44.779202'};
+BLD.b1={ka:'I კორპუსი',en:'Building I',sk:'I კორპუსი',se:'Building I',addr_ka:'კოსტავას ქ. №77ა',addr_en:'77a Kostava St.',kw:'I პირველი კორპუსი first building',maps:'https://maps.app.goo.gl/RKwTHXd4KBpCStbf9',ll:'41.722721,44.779535'};
 var BLD_ORDER=['main','b1','kav'];
 var ENT={main:'main-01-entrance',kav:'kav-02-entrance'};
 function entFor(){ return S.byId[ENT[bldOf((R.to||R.from||{floor:S.floor}).floor)]]||null; }
