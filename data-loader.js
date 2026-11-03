@@ -8,7 +8,7 @@
  *   const { data, warn } = await UGData.load('https://raw.githubusercontent.com/USER/REPO/main/data.json');
  *
  * data-ს სტრუქტურა:
- *   staff      ['ნათია ბერიძე', ...]                         — თანამშრომლები (გრაფიკის 1-ლი სტრიქონი)
+ *   staff      ['ნათია ბერიძე', ...]                         — თანამშრომლები (გრაფიკი + ახლები საქმეებიდან/ლექციებიდან/QR-იდან)
  *   shifts     { 'ნათია ბერიძე': { 0:['10:00','19:00'], ... } } — 0=ორშაბათი … 4=პარასკევი
  *   breaks     [ { key:'main'|'kostava'|'kav', title, rows:[{shift:['10:00','19:00'], time:'13:00', ops:2}] } ]
  *   breaksMain / breaksKav                                   — იგივე, მოკლე ფორმით
@@ -202,7 +202,6 @@
       staff.forEach(function (n) { if (!(n in by)) by[n] = ''; });
       tasks.push({ start: iso(st), end: iso(en), label: lab, by: by });
     }
-    tcols.filter(function (n) { return staff.indexOf(n) < 0; }).forEach(function (n) { warn.push('საქმეებში „' + n + '“ გრაფიკში არ არის'); });
 
     /* --- შიტი #2: სალექციო ცხრილი --- */
     var L = sh('lectures'), lnames = [];
@@ -242,6 +241,24 @@
       friends.push({ manager: mgr, declared: String(students.length), students: students });
     }
     if (!friends.length) warn.push('MY UG მეგობრის სიები ვერ ვიპოვე');
+
+    /* --- ახალი თანამშრომლები: ვინც გრაფიკში ჯერ არ წერია, მაგრამ არის საქმეებში,
+           ლექციებში, QR-ში ან ქავთარაძის მორიგეობაში — ავტომატურად ემატება სიას --- */
+    var extra = [];
+    function addExtra(n) { if (n && staff.indexOf(n) < 0 && extra.indexOf(n) < 0) extra.push(n); }
+    tcols.forEach(addExtra);
+    lnames.forEach(addExtra);
+    qr.forEach(function (q) { addExtra(q.am); addExtra(q.pm); });
+    Object.keys(kav).forEach(function (d) { kav[d].forEach(function (k) { addExtra(k.name); }); });
+    // ცხრილის თანმიმდევრობის შენარჩუნება: საქმის გადანაწილების რიგით ჩავსვამთ
+    extra.forEach(function (n) {
+      var ti = tcols.indexOf(n), pos = staff.length;
+      if (ti >= 0) { for (var k = ti + 1; k < tcols.length; k++) { var j = staff.indexOf(tcols[k]); if (j >= 0) { pos = j; break; } } }
+      staff.splice(pos, 0, n);
+      shifts[n] = {}; lectures[n] = lectures[n] || {};
+      tasks.forEach(function (w) { if (!(n in w.by)) w.by[n] = ''; });
+      warn.push('„' + n + '“ დაემატა, მაგრამ „გრაფიკში“ ცვლა ჯერ არ აქვს');
+    });
 
     return {
       data: {

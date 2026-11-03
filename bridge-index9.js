@@ -29,8 +29,8 @@
     var oldMap = {}; (old.names || []).forEach(function (n, i) { oldMap[n] = old.short[i]; });
     var first = names.map(function (n) { return n.split(' ')[0]; });
     return names.map(function (n, i) {
-      if (oldMap[n]) return oldMap[n];
       var dup = first.filter(function (f) { return f === first[i]; }).length > 1;
+      if (oldMap[n] && (!dup || oldMap[n] !== first[i])) return oldMap[n];
       var parts = n.split(' ');
       return dup && parts[1] ? parts[0] + ' ' + parts[1].charAt(0) + '.' : parts[0];
     });
@@ -44,7 +44,7 @@
 
     // ცვლები: საათი, როდის იწყება (9 / 10 / 11)
     var shift = [0, 1, 2, 3, 4].map(function (wd) {
-      return names.map(function (n) { var s = d.shifts[n] && d.shifts[n][wd]; return s ? hourOf(s[0]) : 10; });
+      return names.map(function (n) { var s = d.shifts[n] && d.shifts[n][wd]; return s ? hourOf(s[0]) : null; });   // null = ამ დღეს ცვლა არ აქვს
     });
     // ქავთარაძე: [09:00-ის თანამშრომელი, 10:00-ის თანამშრომელი]
     var kavSh = [9, 10];
@@ -76,6 +76,7 @@
         }
         pending.forEach(function (p) {
           var L = locOf(p), table = L.k ? d.breaksKav : d.breaksMain;
+          if (L.sh == null) { out[p] = null; return; }
           var opts = (table || []).filter(function (b) { return hourOf(b.shift[0]) === L.sh; });
           if (!opts.length) { out[p] = L.sh + 3; return; }
           opts.sort(function (a, b) {

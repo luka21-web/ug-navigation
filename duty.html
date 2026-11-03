@@ -464,7 +464,7 @@ window.UG_DATA_URL = window.UG_DATA_URL || 'data.json';
  *   const { data, warn } = await UGData.load('https://raw.githubusercontent.com/USER/REPO/main/data.json');
  *
  * data-ს სტრუქტურა:
- *   staff      ['ნათია ბერიძე', ...]                         — თანამშრომლები (გრაფიკის 1-ლი სტრიქონი)
+ *   staff      ['ნათია ბერიძე', ...]                         — თანამშრომლები (გრაფიკი + ახლები საქმეებიდან/ლექციებიდან/QR-იდან)
  *   shifts     { 'ნათია ბერიძე': { 0:['10:00','19:00'], ... } } — 0=ორშაბათი … 4=პარასკევი
  *   breaks     [ { key:'main'|'kostava'|'kav', title, rows:[{shift:['10:00','19:00'], time:'13:00', ops:2}] } ]
  *   breaksMain / breaksKav                                   — იგივე, მოკლე ფორმით
@@ -658,7 +658,6 @@ window.UG_DATA_URL = window.UG_DATA_URL || 'data.json';
       staff.forEach(function (n) { if (!(n in by)) by[n] = ''; });
       tasks.push({ start: iso(st), end: iso(en), label: lab, by: by });
     }
-    tcols.filter(function (n) { return staff.indexOf(n) < 0; }).forEach(function (n) { warn.push('საქმეებში „' + n + '“ გრაფიკში არ არის'); });
 
     /* --- შიტი #2: სალექციო ცხრილი --- */
     var L = sh('lectures'), lnames = [];
@@ -698,6 +697,24 @@ window.UG_DATA_URL = window.UG_DATA_URL || 'data.json';
       friends.push({ manager: mgr, declared: String(students.length), students: students });
     }
     if (!friends.length) warn.push('MY UG მეგობრის სიები ვერ ვიპოვე');
+
+    /* --- ახალი თანამშრომლები: ვინც გრაფიკში ჯერ არ წერია, მაგრამ არის საქმეებში,
+           ლექციებში, QR-ში ან ქავთარაძის მორიგეობაში — ავტომატურად ემატება სიას --- */
+    var extra = [];
+    function addExtra(n) { if (n && staff.indexOf(n) < 0 && extra.indexOf(n) < 0) extra.push(n); }
+    tcols.forEach(addExtra);
+    lnames.forEach(addExtra);
+    qr.forEach(function (q) { addExtra(q.am); addExtra(q.pm); });
+    Object.keys(kav).forEach(function (d) { kav[d].forEach(function (k) { addExtra(k.name); }); });
+    // ცხრილის თანმიმდევრობის შენარჩუნება: საქმის გადანაწილების რიგით ჩავსვამთ
+    extra.forEach(function (n) {
+      var ti = tcols.indexOf(n), pos = staff.length;
+      if (ti >= 0) { for (var k = ti + 1; k < tcols.length; k++) { var j = staff.indexOf(tcols[k]); if (j >= 0) { pos = j; break; } } }
+      staff.splice(pos, 0, n);
+      shifts[n] = {}; lectures[n] = lectures[n] || {};
+      tasks.forEach(function (w) { if (!(n in w.by)) w.by[n] = ''; });
+      warn.push('„' + n + '“ დაემატა, მაგრამ „გრაფიკში“ ცვლა ჯერ არ აქვს');
+    });
 
     return {
       data: {
@@ -1273,16 +1290,21 @@ function closeSplash(){ const sp=$('#splash'); if(sp.hidden||sp.classList.contai
 const GATE_HASH='2ce2278a88b5c6fa79ccb632e064b85c2ca9915dd58fa293c813af9c426df5c6';
 function sha256Fallback(str){var ascii=unescape(encodeURIComponent(str));function rr(v,a){return(v>>>a)|(v<<(32-a))}var maxWord=Math.pow(2,32),i,j,result='',words=[],bitLen=ascii.length*8;var hash=[],k=[],pc=0,comp={};for(var cand=2;pc<64;cand++){if(!comp[cand]){for(i=0;i<313;i+=cand)comp[i]=cand;hash[pc]=(Math.pow(cand,.5)*maxWord)|0;k[pc++]=(Math.pow(cand,1/3)*maxWord)|0}}hash=hash.slice(0,8);ascii+='\x80';while(ascii.length%64-56)ascii+='\x00';for(i=0;i<ascii.length;i++)words[i>>2]|=ascii.charCodeAt(i)<<((3-i)%4)*8;words[words.length]=(bitLen/maxWord)|0;words[words.length]=bitLen;for(j=0;j<words.length;){var w=words.slice(j,j+=16),old=hash;hash=hash.slice(0,8);for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];var t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(t1+t2)|0].concat(hash);hash[4]=(hash[4]+t1)|0}for(i=0;i<8;i++)hash[i]=(hash[i]+old[i])|0}for(i=0;i<8;i++)for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=(b<16?'0':'')+b.toString(16)}return result}
 function gateHash(t){ try{ if(window.crypto&&crypto.subtle&&window.TextEncoder) return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')).catch(()=>sha256Fallback(t)); }catch(e){} return Promise.resolve(sha256Fallback(t)); }
-let gateOk=false; try{ gateOk=sessionStorage.getItem('ug-gate-ok')===GATE_HASH.slice(0,16); }catch(e){}
+const GATE_TTL=60*60*1000; /* კოდს ხელახლა ითხოვს ყოველ 1 საათში */
+function gateValid(){ try{ const o=JSON.parse(localStorage.getItem('ug-gate')||'null'); return !!o&&o.h===GATE_HASH.slice(0,16)&&Date.now()-o.t<GATE_TTL; }catch(e){ return false; } }
+function gateSave(){ try{ localStorage.setItem('ug-gate',JSON.stringify({h:GATE_HASH.slice(0,16),t:Date.now()})); }catch(e){} }
+let gateOk=gateValid();
+function gateCheck(){ if(!gateOk||gateValid()) return; gateOk=false; try{ localStorage.removeItem('ug-gate'); }catch(e){} $('#spForm').classList.remove('ok'); $('#spCode').value=''; $('#spErr').textContent='შესვლიდან 1 საათი გავიდა. შეიყვანეთ კოდი ხელახლა.'; const sp=$('#splash'); sp.hidden=false; sp.classList.remove('out'); document.body.classList.add('splashing'); setTimeout(()=>{ try{ $('#spCode').focus({preventScroll:true}); }catch(e){} },60); }
+setInterval(gateCheck,20000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) gateCheck(); });
 let gateFails=0, gateUntil=0;
 if(gateOk) $('#spForm').classList.add('ok');
 $('#spForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  if(gateOk){ closeSplash(); return; }
+  if(gateOk&&gateValid()){ closeSplash(); return; } if(gateOk){ gateOk=false; $('#spForm').classList.remove('ok'); }
   const err=$('#spErr'), inp=$('#spCode'), v=inp.value.trim();
   if(Date.now()<gateUntil){ err.textContent='ძალიან ბევრი მცდელობა. სცადეთ '+Math.ceil((gateUntil-Date.now())/1000)+' წამში.'; return; }
   if(!v){ err.textContent='ჩაწერეთ კოდი.'; inp.focus(); return; }
-  if((await gateHash(v))===GATE_HASH){ gateOk=true; try{ sessionStorage.setItem('ug-gate-ok',GATE_HASH.slice(0,16)); }catch(x){} err.textContent=''; closeSplash(); }
+  if((await gateHash(v))===GATE_HASH){ gateOk=true; gateSave(); err.textContent=''; closeSplash(); }
   else { gateFails++; if(gateFails>=5){ gateUntil=Date.now()+30000; gateFails=0; } err.textContent='კოდი არასწორია.'; inp.value=''; inp.focus(); }
 });
 $('#splash').addEventListener('keydown',e=>{ if(e.key==='Enter'&&gateOk&&e.target.id!=='spGo'){ e.preventDefault(); closeSplash(); } });
