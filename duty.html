@@ -379,16 +379,16 @@ td.cp{position:relative;padding-bottom:34px!important}
 .hl-row td{animation:flashc 2.4s ease-out}
 .tabs-sp{flex:1}
 .tabs a.tab-ic{padding:0 10px}
+.pmodal{position:fixed;inset:0;z-index:55;background:rgba(10,16,26,.45);display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--top) + 32px) 16px 24px;overflow:auto}
+.pm-card{width:min(1100px,100%);background:var(--ground);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;animation:pmIn .18s ease-out}
+.pm-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
+.pm-h b{font-size:17px;flex:1}
+.pm-body{padding:16px 18px 22px}
+.pm-body .hub-h{margin-bottom:12px}
+body.pm-open{overflow:hidden}
+@keyframes pmIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width:700px){.pmodal{padding:0}.pm-card{border-radius:0;min-height:100%}}
 @media (max-width:520px){.tabs .tl-long{display:none}.tabs a{padding:0 10px}}
-.subnav{display:flex;gap:4px;margin:26px 0 14px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto;scrollbar-width:none;scroll-margin-top:calc(var(--hdr) + var(--top) + 12px);position:sticky;top:calc(var(--hdr) + var(--top) + 6px);z-index:20;box-shadow:0 4px 14px rgba(20,32,60,.06)}
-.subnav::-webkit-scrollbar{display:none}
-.subnav a{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:0 14px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;white-space:nowrap}
-.subnav a svg{width:16px;height:16px;flex:none}
-.subnav a:hover{color:var(--ink);background:var(--surface-2)}
-.subnav a.on{background:var(--accent);color:var(--accent-ink)}
-#subView .hub-h{margin-bottom:12px}
-#subView .hub-h h1{font-family:var(--sans);font-size:20px}
-#subView .hub-h p{font-size:13.5px}
 .livedot{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);font-weight:600;white-space:nowrap;padding:0 6px}
 .livedot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
 .edit-tg{align-self:center;height:32px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--ink)}
@@ -448,6 +448,7 @@ body.editing .hub{padding-bottom:120px}
 <div class="editbar" id="editbar" hidden><span id="editMsg">რედაქტირების რეჟიმი</span><span class="tabs-sp"></span><button class="btn-s" id="cancelBtn">გაუქმება</button><button class="send" id="saveBtn">შენახვა</button></div>
 <div class="toast" id="toast" hidden role="status"></div>
 <div id="hubView" class="hub"></div>
+<div class="pmodal" id="pmodal" hidden><div class="pm-card" role="dialog" aria-modal="true" aria-labelledby="pmT"><div class="pm-h"><b id="pmT"></b><button class="btn-s" id="pmX" type="button" aria-label="დახურვა">✕</button></div><div class="pm-body" id="pmBody"></div></div></div>
 <div class="shell" id="kbView" hidden>
   <aside class="side" id="side"></aside>
   <main class="main" id="main"></main>
@@ -1050,7 +1051,7 @@ function conflicts(){
 
 /* ---- TODAY ---- */
 function TV(){ return document.getElementById('todayBox')||$('#hubView'); }
-function HV(){ return document.getElementById('subView')||$('#hubView'); }
+function HV(){ const m=$('#pmodal'); return (m&&!m.hidden)?$('#pmBody'):$('#hubView'); }
 function renderToday(){
   const sel = hubDay==null ? todaySel() : hubDay;
   const mon = addDays(baseMonday(), 7*weekOff);
@@ -1096,7 +1097,7 @@ function renderToday(){
     if(qrDay&&(qrDay.am===n||qrDay.pm===n)){ const sl=H.qrSlots[qrDay.am===n?0:1]; bars+=`<div class="bar qr" style="left:${pct(toM(sl[0]))};width:calc(${pct(toM(sl[1]))} - ${pct(toM(sl[0]))})">QR ${fmtR(sl)}</div>`; }
     const busy=s||(qrDay&&(qrDay.am===n?H.qrSlots[0]:qrDay.pm===n?H.qrSlots[1]:null));
     lecFor(n,sel).forEach(l=>{ const hit=busy&&overlap(busy,l)>0; if(hit) lecHit.push(n); bars+=`<div class="lecb ${hit?'hit':''}" title="ლექცია ${fmtR(l)}" style="left:${pct(toM(l[0]))};width:calc(${pct(toM(l[1]))} - ${pct(toM(l[0]))})"></div>`; });
-    return `<div class="tl-row ${n===me?'me':''}"><div class="tl-name"><b>${esc(n)}</b>${wk&&sel<5?taskChip(wk.by[n]):''}</div><div class="tl-track">${grid}${bars}${nowLine}</div></div>`;
+    return `<div class="tl-row ${n===me?'me':''}" data-who="${esc(n)}"><div class="tl-name"><b>${esc(n)}</b>${wk&&sel<5?taskChip(wk.by[n]):''}</div><div class="tl-track">${grid}${bars}${nowLine}</div></div>`;
   }).join('');
   const sum=[];
   if(isToday&&sel<5) sum.push(`ახლა სამსახურშია: <b>${working}</b>`);
@@ -1419,19 +1420,28 @@ setTimeout(()=>{ try{ (gateOk?$('#spGo'):$('#spCode')).focus({preventScroll:true
 tickClock(); setInterval(tickClock,1000);
 setInterval(()=>{ if((curView==='today'||SUBS[curView])&&!editMode&&document.getElementById('todayBox')){ const a=document.activeElement; if(!(a&&/INPUT|SELECT|TEXTAREA/.test(a.tagName))) renderToday(); } },60000);
 
-const SUBS={schedule:'კვირის გრაფიკი',tasks:'საქმეები',friends:'MY UG მეგობარი',lectures:'ლექციები'};
-const SUBR={schedule:renderSchedule,tasks:renderTasks,friends:renderFriends,lectures:renderLectures};
-const SUBI={schedule:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',tasks:'<path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',friends:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',lectures:'<path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>'};
-let curSub=store.get('hub-sub','schedule'); if(!SUBS[curSub]) curSub='schedule';
+let curSub='';
 function renderHubPage(){
-  if(!document.getElementById('subView')) $('#hubView').innerHTML='<div id="todayBox"></div><nav class="subnav" id="subnav" aria-label="გრაფიკების ხედები"></nav><div id="subView"></div>';
+  if(!document.getElementById('todayBox')) $('#hubView').innerHTML='<div id="todayBox"></div>';
   renderToday();
-  $('#subnav').innerHTML=Object.keys(SUBS).map(k=>`<a role="link" tabindex="0" data-href="#${k}" class="${k===curSub?'on':''}" ${k===curSub?'aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${SUBI[k]}</svg>${SUBS[k]}</a>`).join('');
-  SUBR[curSub]();
-  const dup=document.querySelector('#subView #meSel'); if(dup){ const w=dup.closest('.me-pick'); (w||dup).remove(); }
+  if(hubHighlight){ const r=document.querySelector(`.tl-row[data-who="${CSS.escape(hubHighlight)}"]`); if(r){ r.scrollIntoView({block:'center'}); r.classList.add('flash'); } hubHighlight=''; }
 }
-const subView=k=>()=>{ curSub=k; store.set('hub-sub',k); renderHubPage(); };
-const HUBV={today:renderHubPage,schedule:subView('schedule'),tasks:subView('tasks'),friends:subView('friends'),lectures:subView('lectures'),admin:renderAdmin};
+const PANELS={tasks:'საქმეების განაწილება',friends:'MY UG მეგობარი'};
+function openPanel(k){
+  if(!document.getElementById('todayBox')) renderHubPage();
+  curSub=k; const m=$('#pmodal'); $('#pmT').textContent=PANELS[k]; m.hidden=false; document.body.classList.add('pm-open');
+  SUBR[k]();
+  const dup=document.querySelector('#pmBody #meSel'); if(dup){ const w=dup.closest('.me-pick'); (w||dup).remove(); }
+  const h1=document.querySelector('#pmBody .hub-h h1'); if(h1) h1.remove();
+  setTimeout(()=>{ try{ $('#pmX').focus({preventScroll:true}); }catch(e){} },30);
+}
+function closePanel(silent){ const m=$('#pmodal'); if(!m||m.hidden) return; m.hidden=true; $('#pmBody').innerHTML=''; document.body.classList.remove('pm-open'); curSub=''; if(!silent){ curView='today'; curHash='today'; setUrl('today'); } }
+$('#pmX').addEventListener('click',()=>closePanel());
+$('#pmodal').addEventListener('click',e=>{ if(e.target.id==='pmodal') closePanel(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#pmodal').hidden){ e.preventDefault(); closePanel(); } });
+const SUBR={tasks:renderTasks,friends:renderFriends};
+const SUBS={tasks:1,friends:1,schedule:1,lectures:1};
+const HUBV={today:()=>{ closePanel(true); renderHubPage(); },schedule:()=>{ closePanel(true); renderHubPage(); },lectures:()=>{ closePanel(true); renderHubPage(); },tasks:()=>openPanel('tasks'),friends:()=>openPanel('friends'),admin:()=>{ closePanel(true); renderAdmin(); }};
 const TITLES={today:'გრაფიკები',schedule:'გრაფიკი',tasks:'საქმეები',friends:'MY UG მეგობარი',lectures:'ლექციები',admin:'მართვა'};
 let curView='today';
 function setTab(t){ document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.tab===t)); }
@@ -1465,8 +1475,8 @@ function route(){
   closeSide();
   if(!h){ curDoc=null; return showHub('today'); }
   if(HUBV[h]){ curDoc=null; const keep=h==='schedule'&&hubHighlight; const prev=curView; showHub(h);
-    if(SUBS[h]&&!keep){ const sn=$('#subnav'); if(sn&&(prev==='today'||SUBS[prev])){ if(sn.getBoundingClientRect().top<0) sn.scrollIntoView({block:'start'}); } else window.scrollTo(0,0); } else if(!keep) window.scrollTo(0,0); return; }
-  showKB();
+    if(!keep&&!PANELS[h]&&!(PANELS[prev]&&h==='today')) window.scrollTo(0,0); return; }
+  closePanel(true); showKB();
   if(h==='service-standard'||(CHUNK[h]&&CHUNK[h].doc==='service-standard')) setTab('std');
   if(h==='kb'){ curDoc=null; renderHome(); window.scrollTo(0,0); return; }
   if(DOC[h]) return renderDoc(h,null);
