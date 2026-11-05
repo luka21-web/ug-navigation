@@ -378,6 +378,17 @@ td.cp{position:relative;padding-bottom:34px!important}
 .note-sm{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.5}
 .hl-row td{animation:flashc 2.4s ease-out}
 .tabs-sp{flex:1}
+.tabs a.tab-ic{padding:0 10px}
+@media (max-width:520px){.tabs .tl-long{display:none}.tabs a{padding:0 10px}}
+.subnav{display:flex;gap:4px;margin:26px 0 14px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto;scrollbar-width:none;scroll-margin-top:calc(var(--hdr) + var(--top) + 12px);position:sticky;top:calc(var(--hdr) + var(--top) + 6px);z-index:20;box-shadow:0 4px 14px rgba(20,32,60,.06)}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:0 14px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;white-space:nowrap}
+.subnav a svg{width:16px;height:16px;flex:none}
+.subnav a:hover{color:var(--ink);background:var(--surface-2)}
+.subnav a.on{background:var(--accent);color:var(--accent-ink)}
+#subView .hub-h{margin-bottom:12px}
+#subView .hub-h h1{font-family:var(--sans);font-size:20px}
+#subView .hub-h p{font-size:13.5px}
 .livedot{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);font-weight:600;white-space:nowrap;padding:0 6px}
 .livedot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
 .edit-tg{align-self:center;height:32px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--ink)}
@@ -426,16 +437,13 @@ body.editing .hub{padding-bottom:120px}
 </header>
 
 <nav class="tabs" id="tabs" aria-label="განყოფილებები">
-  <a role="link" tabindex="0" data-href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>დღეს</a>
-  <a role="link" tabindex="0" data-href="#schedule" data-tab="schedule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>გრაფიკი</a>
-  <a role="link" tabindex="0" data-href="#tasks" data-tab="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>საქმეები</a>
-  <a role="link" tabindex="0" data-href="#friends" data-tab="friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>MY UG მეგობარი</a>
-  <a role="link" tabindex="0" data-href="#lectures" data-tab="lectures"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>ლექციები</a>
-  <a role="link" tabindex="0" data-href="#admin" data-tab="admin" id="adminTab" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>მართვა</a>
+  <a role="link" tabindex="0" data-href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>გრაფიკები</a>
   <a role="link" tabindex="0" data-href="#kb" data-tab="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7"/></svg>ცოდნის ბაზა</a>
+  <a role="link" tabindex="0" data-href="#service-standard" data-tab="std"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="tl-long">მომსახურების </span>სტანდარტი</a>
   <span class="tabs-sp"></span>
-  <span class="livedot" id="liveDot" hidden title="მონაცემები ცოცხალ ბაზიდან, ცვლილებები მაშინვე აისახება">ცოცხალი</span>
+  <span class="livedot" id="liveDot" hidden title="მონაცემები ცოცხალ ბაზიდან, ცვლილებები მაშინვე აისახება">LIVE</span>
   <button class="edit-tg" id="editToggle" hidden>რედაქტირება</button>
+  <a role="link" tabindex="0" data-href="#admin" data-tab="admin" id="adminTab" class="tab-ic" hidden aria-label="მართვა" title="მართვა"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
 </nav>
 <div class="editbar" id="editbar" hidden><span id="editMsg">რედაქტირების რეჟიმი</span><span class="tabs-sp"></span><button class="btn-s" id="cancelBtn">გაუქმება</button><button class="send" id="saveBtn">შენახვა</button></div>
 <div class="toast" id="toast" hidden role="status"></div>
@@ -462,6 +470,8 @@ body.editing .hub{padding-bottom:120px}
 <script>
 /* ▼▼▼ data.json-ის მისამართი (Google Sheets → Make.com → GitHub) ▼▼▼ */
 window.UG_DATA_URL = window.UG_DATA_URL || 'data.json';
+/* ▼▼▼ AI ჩატბოტის (Cloudflare Worker) მისამართი. ცარიელი = AI გამორთულია, ჩატი ბაზაში ეძებს ▼▼▼ */
+window.UG_AI_URL = window.UG_AI_URL || '';
 </script>
 <script>
 /*!
@@ -1039,6 +1049,8 @@ function conflicts(){
 }
 
 /* ---- TODAY ---- */
+function TV(){ return document.getElementById('todayBox')||$('#hubView'); }
+function HV(){ return document.getElementById('subView')||$('#hubView'); }
 function renderToday(){
   const sel = hubDay==null ? todaySel() : hubDay;
   const mon = addDays(baseMonday(), 7*weekOff);
@@ -1088,7 +1100,7 @@ function renderToday(){
   }).join('');
   const sum=[];
   if(isToday&&sel<5) sum.push(`ახლა სამსახურშია: <b>${working}</b>`);
-  if(atKav.length) sum.push('ქავთარაძეში: '+atKav.map(esc).join(', '));
+  if(atKav.length) sum.push('ქავთარაძეზეა: '+atKav.map(esc).join(', '));
   if(lecHit.length) sum.push(`<span style="color:var(--lec)">ლექცია ემთხვევა: ${[...new Set(lecHit)].map(esc).join(', ')}</span>`);
   if(sel===5) sum.push(qrDay?`QR მორიგეები: ${esc(qrDay.am)} (${fmtR(H.qrSlots[0])}), ${esc(qrDay.pm)} (${fmtR(H.qrSlots[1])})`:'ამ შაბათს QR მორიგეობა დაგეგმილი არ არის');
   h+=`<section class="panel"><h2>გუნდი <small>${DAYN[sel]}, ${fmtDate(date)}</small></h2>
@@ -1097,7 +1109,7 @@ function renderToday(){
     <div class="tl"><div class="tl-in"><div class="tl-row" style="min-height:26px;border:0"><div></div><div class="tl-hours">${hours.map(x=>`<span style="left:${pct(x*60)}">${x}:00</span>`).join('')}</div></div>${rows}</div></div>
     <div class="legend"><span><i style="background:var(--main-bar)"></i>მთავარი კორპუსი</span><span><i style="background:var(--kav-bar)"></i>ქავთარაძის კორპუსი</span><span><i style="background:var(--c-tpl)"></i>QR მორიგეობა</span><span><i style="border:2px solid var(--muted)"></i>ლექცია</span><span><i style="border:2px solid var(--lec);background:var(--lec-soft)"></i>ლექცია სამუშაო დროს</span></div>
   </section></div>`;
-  $('#hubView').innerHTML=h;
+  TV().innerHTML=h;
 }
 
 /* ---- SCHEDULE ---- */
@@ -1126,7 +1138,7 @@ function renderSchedule(){
   </section>
   <p class="note-sm">${srcNote()}</p>
   </div>`;
-  $('#hubView').innerHTML=h;
+  HV().innerHTML=h;
   if(hubHighlight){ const r=document.querySelector(`tr[data-who="${CSS.escape(hubHighlight)}"]`); if(r){ r.scrollIntoView({block:'center'}); r.classList.add('hl-row'); } hubHighlight=''; }
 }
 
@@ -1144,7 +1156,7 @@ function renderTasks(){
   let h=`<div class="hub-h"><div><h1>საქმეების განაწილება</h1><p>ყოველკვირეული როტაცია · ${H.tasks.length} კვირა, ${fmtDate(H.tasks[0].start)} – ${fmtDate(H.tasks[H.tasks.length-1].end)}</p></div>${mePicker()}</div>
   <div class="stack">${hero(cur,'ამ კვირა')}${hero(nxt,'შემდეგი კვირა')}
   <section class="panel"><h2>სრული განაწილება <label class="me-pick" style="margin-left:auto;font-weight:400" for="tasksWho">ხედი:<select id="tasksWho" class="sel"><option value="">მთელი გუნდი</option>${H.staff.map(n=>`<option ${n===who?'selected':''}>${esc(n)}</option>`).join('')}</select></label></h2>${table}</section></div>`;
-  $('#hubView').innerHTML=h;
+  HV().innerHTML=h;
 }
 
 /* ---- FRIENDS ---- */
@@ -1166,7 +1178,7 @@ function renderFriends(){
       return `<button class="mgr ${f.manager===friendsMgr?'on':''}" data-pickmgr="${esc(f.manager)}"><b>${esc(f.manager)}${f.manager===me?' · მე':''}</b><span class="cnt">${f.students.length}<small>სტუდენტი</small></span><span class="pr">${esc(top)}</span><span class="pr">${esc(mgrToday(f.manager))}</span></button>`}).join('')}</div></section>
   <section class="panel" id="mgrList"></section>
   <p class="note-sm">სტუდენტების პირადი ნომრები ამ გვერდზე განზრახ არ არის განთავსებული. საჭიროების შემთხვევაში გადაამოწმე MY UG-ში.</p></div>`;
-  $('#hubView').innerHTML=h;
+  HV().innerHTML=h;
   renderFres(); renderMgrList();
   const fq=$('#fq'); fq.addEventListener('input',()=>{friendsQ=fq.value; renderFres();});
   $('#fprog').addEventListener('change',e=>{friendsProg=e.target.value; renderFres();});
@@ -1190,7 +1202,7 @@ function renderLectures(){
   const td=dayIdx(new Date());
   const rows=H.staff.map(n=>{ let hitN=0; const cells=[0,1,2,3,4,5].map(d=>{ const s=shiftFor(n,d); const ls=lecFor(n,d); if(editMode) return `<td><input class="ed" data-k="lec" data-n="${esc(n)}" data-d="${d}" value="${esc(ls.map(fmtR).join(', '))}" placeholder="—" aria-label="${esc(n)}, ${DAYN[d]}"></td>`; return `<td class="${d===td?'today':''}">${ls.length?`<div class="lec-cell">${ls.map(l=>{const hit=s&&overlap(s,l)>0; if(hit) hitN++; return `<span class="${hit?'hit':''}">${fmtR(l)}</span>`}).join('')}</div>`:'<span class="muted">—</span>'}</td>`}).join('');
     return `<tr class="${n===me?'me':''}"><td><b>${esc(n)}</b>${hitN?`<div class="tag lec" style="margin:4px 0 0">${hitN} გადაკვეთა</div>`:''}</td>${cells}</tr>`; }).join('');
-  $('#hubView').innerHTML=`<div class="hub-h"><div><h1>სალექციო ცხრილი</h1><p>თანამშრომლების ლექციები. წითლად მონიშნულია ლექცია, რომელიც სამუშაო საათებს ემთხვევა.</p></div>${mePicker()}</div>
+  HV().innerHTML=`<div class="hub-h"><div><h1>სალექციო ცხრილი</h1><p>თანამშრომლების ლექციები. წითლად მონიშნულია ლექცია, რომელიც სამუშაო საათებს ემთხვევა.</p></div>${mePicker()}</div>
   <section class="panel"><div class="scroll"><table class="dt"><thead><tr><th>თანამშრომელი</th>${[0,1,2,3,4,5].map(d=>`<th class="${d===td?'today':''}">${DAYN[d]}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
   <p class="note-sm">${editMode?'რამდენიმე ლექცია ერთ დღეს მძიმით გამოყავი: 09:00-11:10, 16:00-18:10':'გადაკვეთა ითვლება ავტომატურად: ლექციის დრო შედარებულია იმავე დღის სამუშაო ცვლასთან.'}</p></section>`;
 }
@@ -1384,6 +1396,7 @@ function closeSplash(){ const sp=$('#splash'); if(sp.hidden||sp.classList.contai
 const GATE_HASH='2ce2278a88b5c6fa79ccb632e064b85c2ca9915dd58fa293c813af9c426df5c6';
 function sha256Fallback(str){var ascii=unescape(encodeURIComponent(str));function rr(v,a){return(v>>>a)|(v<<(32-a))}var maxWord=Math.pow(2,32),i,j,result='',words=[],bitLen=ascii.length*8;var hash=[],k=[],pc=0,comp={};for(var cand=2;pc<64;cand++){if(!comp[cand]){for(i=0;i<313;i+=cand)comp[i]=cand;hash[pc]=(Math.pow(cand,.5)*maxWord)|0;k[pc++]=(Math.pow(cand,1/3)*maxWord)|0}}hash=hash.slice(0,8);ascii+='\x80';while(ascii.length%64-56)ascii+='\x00';for(i=0;i<ascii.length;i++)words[i>>2]|=ascii.charCodeAt(i)<<((3-i)%4)*8;words[words.length]=(bitLen/maxWord)|0;words[words.length]=bitLen;for(j=0;j<words.length;){var w=words.slice(j,j+=16),old=hash;hash=hash.slice(0,8);for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];var t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(t1+t2)|0].concat(hash);hash[4]=(hash[4]+t1)|0}for(i=0;i<8;i++)hash[i]=(hash[i]+old[i])|0}for(i=0;i<8;i++)for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=(b<16?'0':'')+b.toString(16)}return result}
 function gateHash(t){ try{ if(window.crypto&&crypto.subtle&&window.TextEncoder) return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')).catch(()=>sha256Fallback(t)); }catch(e){} return Promise.resolve(sha256Fallback(t)); }
+function gateNorm(s){ const M={'ა':'a','ბ':'b','ც':'c','დ':'d','ე':'e','ფ':'f','გ':'g','ჰ':'h','ი':'i','ჯ':'j','კ':'k','ლ':'l','მ':'m','ნ':'n','ო':'o','პ':'p','ქ':'q','რ':'r','ს':'s','ტ':'t','უ':'u','ვ':'v','წ':'w','ხ':'x','ყ':'y','ზ':'z','ღ':'r','თ':'t','შ':'s','ჭ':'w','ჩ':'c','ძ':'z','ჟ':'j'}; return String(s||'').replace(/\s+/g,'').replace(/[ა-ჰ]/g,ch=>M[ch]||ch).toLowerCase(); } /* ქართულ კლავიატურაზე აკრეფილი „სსს123“ = „sss123“; დიდი ასოებიც მიიღება */
 const GATE_TTL=60*60*1000; /* კოდს ხელახლა ითხოვს ყოველ 1 საათში */
 function gateValid(){ try{ const o=JSON.parse(localStorage.getItem('ug-gate')||'null'); return !!o&&o.h===GATE_HASH.slice(0,16)&&Date.now()-o.t<GATE_TTL; }catch(e){ return false; } }
 function gateSave(){ try{ localStorage.setItem('ug-gate',JSON.stringify({h:GATE_HASH.slice(0,16),t:Date.now()})); }catch(e){} }
@@ -1395,7 +1408,7 @@ if(gateOk) $('#spForm').classList.add('ok');
 $('#spForm').addEventListener('submit',async e=>{
   e.preventDefault();
   if(gateOk&&gateValid()){ closeSplash(); return; } if(gateOk){ gateOk=false; $('#spForm').classList.remove('ok'); }
-  const err=$('#spErr'), inp=$('#spCode'), v=inp.value.trim();
+  const err=$('#spErr'), inp=$('#spCode'), v=gateNorm(inp.value);
   if(Date.now()<gateUntil){ err.textContent='ძალიან ბევრი მცდელობა. სცადეთ '+Math.ceil((gateUntil-Date.now())/1000)+' წამში.'; return; }
   if(!v){ err.textContent='ჩაწერეთ კოდი.'; inp.focus(); return; }
   if((await gateHash(v))===GATE_HASH){ gateOk=true; gateSave(); err.textContent=''; closeSplash(); }
@@ -1404,13 +1417,25 @@ $('#spForm').addEventListener('submit',async e=>{
 $('#splash').addEventListener('keydown',e=>{ if(e.key==='Enter'&&gateOk&&e.target.id!=='spGo'){ e.preventDefault(); closeSplash(); } });
 setTimeout(()=>{ try{ (gateOk?$('#spGo'):$('#spCode')).focus({preventScroll:true}); }catch(e){} },60);
 tickClock(); setInterval(tickClock,1000);
-setInterval(()=>{ if(curView==='today'&&!editMode){ const a=document.activeElement; if(!(a&&/INPUT|SELECT|TEXTAREA/.test(a.tagName))) renderToday(); } },60000);
+setInterval(()=>{ if((curView==='today'||SUBS[curView])&&!editMode&&document.getElementById('todayBox')){ const a=document.activeElement; if(!(a&&/INPUT|SELECT|TEXTAREA/.test(a.tagName))) renderToday(); } },60000);
 
-const HUBV={today:renderToday,schedule:renderSchedule,tasks:renderTasks,friends:renderFriends,lectures:renderLectures,admin:renderAdmin};
-const TITLES={today:'დღეს',schedule:'გრაფიკი',tasks:'საქმეები',friends:'MY UG მეგობარი',lectures:'ლექციები',admin:'მართვა'};
+const SUBS={schedule:'კვირის გრაფიკი',tasks:'საქმეები',friends:'MY UG მეგობარი',lectures:'ლექციები'};
+const SUBR={schedule:renderSchedule,tasks:renderTasks,friends:renderFriends,lectures:renderLectures};
+const SUBI={schedule:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',tasks:'<path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',friends:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',lectures:'<path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>'};
+let curSub=store.get('hub-sub','schedule'); if(!SUBS[curSub]) curSub='schedule';
+function renderHubPage(){
+  if(!document.getElementById('subView')) $('#hubView').innerHTML='<div id="todayBox"></div><nav class="subnav" id="subnav" aria-label="გრაფიკების ხედები"></nav><div id="subView"></div>';
+  renderToday();
+  $('#subnav').innerHTML=Object.keys(SUBS).map(k=>`<a role="link" tabindex="0" data-href="#${k}" class="${k===curSub?'on':''}" ${k===curSub?'aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${SUBI[k]}</svg>${SUBS[k]}</a>`).join('');
+  SUBR[curSub]();
+  const dup=document.querySelector('#subView #meSel'); if(dup){ const w=dup.closest('.me-pick'); (w||dup).remove(); }
+}
+const subView=k=>()=>{ curSub=k; store.set('hub-sub',k); renderHubPage(); };
+const HUBV={today:renderHubPage,schedule:subView('schedule'),tasks:subView('tasks'),friends:subView('friends'),lectures:subView('lectures'),admin:renderAdmin};
+const TITLES={today:'გრაფიკები',schedule:'გრაფიკი',tasks:'საქმეები',friends:'MY UG მეგობარი',lectures:'ლექციები',admin:'მართვა'};
 let curView='today';
 function setTab(t){ document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.tab===t)); }
-function showHub(v){ curView=v; $('#hubView').hidden=false; $('#kbView').hidden=true; $('#menuBtn').hidden=true; setTab(v); HUBV[v](); document.title=TITLES[v]+' · საუნივერსიტეტო სერვისების სამსახური'; }
+function showHub(v){ curView=v; $('#hubView').hidden=false; $('#kbView').hidden=true; $('#menuBtn').hidden=true; setTab(SUBS[v]?'today':v); HUBV[v](); document.title=TITLES[v]+' · საუნივერსიტეტო სერვისების სამსახური'; }
 function showKB(){ curView='kb'; $('#hubView').hidden=true; $('#kbView').hidden=false; $('#menuBtn').hidden=false; setTab('kb'); }
 document.addEventListener('change',e=>{
   if(e.target.id==='meSel'){ me=e.target.value; store.set('hub-me',me); if(me&&mgrOf(me)) friendsMgr=me; HUBV[curView]&&HUBV[curView](); }
@@ -1439,8 +1464,10 @@ function route(){
   const h=curHash;
   closeSide();
   if(!h){ curDoc=null; return showHub('today'); }
-  if(HUBV[h]){ curDoc=null; const keep=h==='schedule'&&hubHighlight; showHub(h); if(!keep) window.scrollTo(0,0); return; }
+  if(HUBV[h]){ curDoc=null; const keep=h==='schedule'&&hubHighlight; const prev=curView; showHub(h);
+    if(SUBS[h]&&!keep){ const sn=$('#subnav'); if(sn&&(prev==='today'||SUBS[prev])){ if(sn.getBoundingClientRect().top<0) sn.scrollIntoView({block:'start'}); } else window.scrollTo(0,0); } else if(!keep) window.scrollTo(0,0); return; }
   showKB();
+  if(h==='service-standard'||(CHUNK[h]&&CHUNK[h].doc==='service-standard')) setTab('std');
   if(h==='kb'){ curDoc=null; renderHome(); window.scrollTo(0,0); return; }
   if(DOC[h]) return renderDoc(h,null);
   const c=CHUNK[h];
@@ -1662,13 +1689,57 @@ $('#msgs').addEventListener('click',e=>{ const b=e.target.closest('[data-ans]');
 $('#msgs').addEventListener('click',e=>{ const b=e.target.closest('[data-cp]'); if(!b) return; const c=CHUNK[b.dataset.cp]; if(!c) return;
   const done=()=>{ b.textContent='დაკოპირდა ✓'; setTimeout(()=>b.textContent='შაბლონის კოპირება',1600); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(c.text).then(done,()=>{}); else { const t=document.createElement('textarea'); t.value=c.text; document.body.append(t); t.select(); try{document.execCommand('copy'); done();}catch(x){} t.remove(); } });
+/* ---------- AI ჩატბოტი (Claude API, Cloudflare Worker-ის გავლით) ---------- */
+/* ▼▼▼ აქ ჩასვი Worker-ის მისამართი, მაგ. 'https://ug-chat.xxxx.workers.dev'. ცარიელი = AI გამორთულია ▼▼▼ */
+const AI_URL = window.UG_AI_URL || '';
+let aiTurns=[];
+function aiContext(q){
+  const parts=[]; let used=0; const cap=7000;
+  const team=lkTeam(q);
+  if(team){ const t=`[[${team.src}]] გუნდის მონაცემები\n${team.lines.join('\n').replace(/\*\*/g,'')}`; parts.push(t); used+=t.length; }
+  const rs=searchScored(q,team?2:6), top=rs[0]?rs[0].score:0;
+  for(const r of rs){ if(r.score<0.2*top) break;
+    const c=r.c, d=DOC[c.doc], cr=crumbFor(c);
+    let body=(d.type==='faq'||c.text.length<=700)?c.text:lkSentences(c,q).join(' ');
+    body=body.replace(/\s+/g,' ').slice(0,700);
+    const piece=`[[${c.id}]] ${d.title}${cr.sec?' › '+cr.sec:''}\n${body}`;
+    if(used+piece.length>cap) break; parts.push(piece); used+=piece.length;
+  }
+  return parts.join('\n\n');
+}
+async function askWorker(a,q){
+  a.innerHTML='<div class="think"><span class="spin"></span>ვეძებ ბაზაში…</div>'; scrollMsgs();
+  const ctl=new AbortController(); busy=ctl; const to=setTimeout(()=>ctl.abort('timeout'),25000);
+  $('#sendBtn').textContent='შეჩერება'; $('#sendBtn').classList.add('stop');
+  let text='', usage={};
+  try{
+    const res=await fetch(AI_URL,{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','X-UG-Gate':GATE_HASH.slice(0,16)},
+      body:JSON.stringify({q, ctx:aiContext(q), hist:aiTurns.slice(-4)})});
+    if(!res.ok||!res.body) throw new Error('HTTP '+res.status);
+    const rd=res.body.getReader(), dec=new TextDecoder(); let buf='';
+    for(;;){ const {done,value}=await rd.read(); if(done) break; buf+=dec.decode(value,{stream:true});
+      let i; while((i=buf.indexOf('\n'))>=0){ const line=buf.slice(0,i).trim(); buf=buf.slice(i+1);
+        if(!line.startsWith('data:')) continue; let ev; try{ ev=JSON.parse(line.slice(5)); }catch(e){ continue; }
+        if(ev.type==='content_block_delta'&&ev.delta&&ev.delta.text){ text+=ev.delta.text; renderAnswer(a,text,false); scrollMsgs(); }
+        else if(ev.type==='message_start') usage.in=ev.message&&ev.message.usage&&ev.message.usage.input_tokens;
+        else if(ev.type==='message_delta') usage.out=ev.usage&&ev.usage.output_tokens;
+        else if(ev.type==='error') throw new Error(ev.error&&ev.error.message||'stream'); } }
+    if(!text.trim()) throw new Error('empty');
+    renderAnswer(a,text,true);
+    aiTurns.push({role:'user',content:q},{role:'assistant',content:text.replace(/\[\[[^\]]+\]\]/g,'')});
+    console.info('AI ტოკენები: შემავალი',usage.in,'· გამომავალი',usage.out);
+  }catch(e){
+    if(ctl.signal.aborted&&ctl.signal.reason!=='timeout'){ if(text) renderAnswer(a,text,true); else a.innerHTML='<p class="note">შეჩერდა.</p>'; }
+    else { console.warn('AI:',e); localAnswer(a,q); a.insertAdjacentHTML('afterbegin','<div class="note" style="margin-bottom:8px">AI ამ წუთას მიუწვდომელია — ნაჩვენებია ბაზის ძებნის შედეგი.</div>'); }
+  }finally{ clearTimeout(to); busy=null; $('#sendBtn').textContent='გაგზავნა'; $('#sendBtn').classList.remove('stop'); scrollMsgs(); }
+}
 function sendQ(q){
   if(busy) return;
   $('#msgs').querySelector('.chat-empty')?.remove();
   const u=document.createElement('div'); u.className='m-u'; u.textContent=q; $('#msgs').append(u);
   const a=document.createElement('div'); a.className='m-a'; $('#msgs').append(a);
   const hits=search(q,8);
-  if(!sample){ localAnswer(a,q); scrollMsgs(); return; }
+  if(!sample){ if(AI_URL) askWorker(a,q); else { localAnswer(a,q); scrollMsgs(); } return; }
   askClaude(a,q,hits);
 }
 function scrollMsgs(){ const m=$('#msgs'); m.scrollTop=m.scrollHeight; }
